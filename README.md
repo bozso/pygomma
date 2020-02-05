@@ -1,2 +1,9 @@
 # pygomma
-Python wrapper for the Go package / application that wraps the Gamma SAR Remote Sensing software.
+
+## Introduction
+
+Essentially this is a very thin wrapper around the Go command line
+application, this is meant to replace shell / `bash` / `PowerShell`
+scripts, since Python is much more portable, easier to maintan and
+friendlier than any of these scripting languages.
+
