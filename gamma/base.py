@@ -83,11 +83,10 @@ class Project(object):
     def select(self, path, *args, **kwargs):
         datas = ','.join(iglob(pth.join(path, "*.zip")))
         
-        gamma.subcmd("select", " ".join(datas),
-            *args, **self.general, **kwargs, dataFiles=datas)
+        gamma.select(*args, **self.general, **kwargs, dataFiles=datas)
     
     def data_import(self, *args, **kwargs):
-        gamma.subcmd("import", *args, **self.general, **kwargs)
+        getattr(gamma, "import")(*args, **self.general, **kwargs)
     
 
 class DataFile(object):
@@ -123,16 +122,16 @@ class DataFile(object):
             name = utils.tmp_file(ext="json")
         
         kwargs["in"] = other.metafile
-        gamma.subcmd("like", out=name, **kwargs)
+        gamma.like(out=name, **kwargs)
         
         return cls(**kwargs)
     
     def move(self, dirPath):
-        gamma.subcmd("move", meta=self.meta, out=dirPath)
+        gamma.move(meta=self.meta, out=dirPath)
         self.meta = path.join(dirPath, self.meta)
     
     def stat(self, **kwargs):
-        return gamma.subcmd("stat", self.metafile, **kwargs)
+        return gamma.stat(self.metafile, **kwargs)
 
 
 class SLC(DataFile):
@@ -140,6 +139,7 @@ class SLC(DataFile):
     
     def SplitInterferometry(self):
         pass
+
 
 class Lookup(DataFile):
     def geocode(self, mode, infile, outfile=None, like=None, **kwargs):
@@ -151,14 +151,14 @@ class Lookup(DataFile):
         kwargs["outfile"] = outfile
         kwargs["lookup"] = self.metafile
 
-        gamma.subcmd("geocode", **kwargs)
+        gamma.geocode(**kwargs)
     
     def radar2geo(self, **kwargs):
         kwargs["mode"] = "togeo"
         
-        return gamma.subcmd("geocode", **kwargs)
+        return gamma.geocode(**kwargs)
 
     def geo2radar(self, **kwargs):
         kwargs["mode"] = "toradar"
         
-        return gamma.subcmd("geocode", **kwargs)
+        return gamma.geocode(**kwargs)
